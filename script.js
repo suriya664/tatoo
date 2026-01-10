@@ -598,44 +598,52 @@ instagramItems.forEach(item => {
 // ============================================
 // THEME TOGGLE FUNCTIONALITY
 // ============================================
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('themeIcon');
-const htmlElement = document.documentElement;
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const htmlElement = document.documentElement;
 
-// Default to LIGHT (smoky/mist theme) - this is the default theme
-// Check if HTML already has data-theme set, otherwise use saved preference or default to light
-const htmlTheme = htmlElement.getAttribute('data-theme');
-const savedTheme = localStorage.getItem('theme');
-const currentTheme = htmlTheme || savedTheme || 'light';
+    if (!themeToggle || !themeIcon) {
+        console.log('Theme toggle elements not found');
+        return;
+    }
 
-// Always set the theme attribute to ensure consistency
-htmlElement.setAttribute('data-theme', currentTheme);
-if (!savedTheme) {
-    // If no saved preference, save the default
-    localStorage.setItem('theme', currentTheme);
+    // Default to LIGHT theme
+    const htmlTheme = htmlElement.getAttribute('data-theme');
+    const savedTheme = localStorage.getItem('theme');
+    const currentTheme = htmlTheme || savedTheme || 'light';
+
+    // Always set the theme attribute to ensure consistency
+    htmlElement.setAttribute('data-theme', currentTheme);
+    if (!savedTheme) {
+        localStorage.setItem('theme', currentTheme);
+    }
+    updateThemeIcon(currentTheme, themeIcon);
+
+    // Add click event listener
+    themeToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        htmlElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme, themeIcon);
+    });
 }
-updateThemeIcon(currentTheme);
 
-themeToggle.addEventListener('click', () => {
-    const currentTheme = htmlElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+function updateThemeIcon(theme, themeIcon) {
+    if (!themeIcon) return;
     
-    htmlElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
-});
-
-function updateThemeIcon(theme) {
-    if (themeIcon) {
-        // Light mode = smoky/mist (show moon icon to switch to dark/bright)
-        // Dark mode = bright/clear (show sun icon to switch to light/smoky)
-        if (theme === 'light') {
-            themeIcon.classList.remove('fa-sun');
-            themeIcon.classList.add('fa-moon');
-        } else {
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
-        }
+    // Light mode = show moon icon to switch to dark
+    // Dark mode = show sun icon to switch to light
+    if (theme === 'light') {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    } else {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
     }
 }
 
@@ -643,6 +651,9 @@ function updateThemeIcon(theme) {
 // INITIALIZE ON PAGE LOAD
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize theme toggle
+    initThemeToggle();
+    
     // Set initial active nav link
     activateNavLink();
     
@@ -658,6 +669,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.opacity = '1';
     }, 100);
 });
+
+// Also try to initialize immediately if DOM is already loaded
+if (document.readyState !== 'loading') {
+    initThemeToggle();
+}
 
 // ============================================
 // PERFORMANCE OPTIMIZATION
