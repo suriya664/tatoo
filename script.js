@@ -5,36 +5,7 @@ const navbar = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
-const homeDropdown = document.getElementById('homeDropdown');
-const homeDropdownMenu = document.getElementById('homeDropdownMenu');
-const navDropdown = document.querySelector('.nav-dropdown');
-
-// Home dropdown toggle
-if (homeDropdown && homeDropdownMenu) {
-    homeDropdown.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (navDropdown) {
-            navDropdown.classList.toggle('active');
-        }
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        if (navDropdown && !navDropdown.contains(e.target)) {
-            navDropdown.classList.remove('active');
-        }
-    });
-
-    // Close dropdown when clicking a dropdown link
-    const dropdownLinks = homeDropdownMenu.querySelectorAll('.dropdown-link');
-    dropdownLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (navDropdown) {
-                navDropdown.classList.remove('active');
-            }
-        });
-    });
-}
+// Dropdown functionality removed - using direct navigation links instead
 
 // Mobile menu toggle
 if (hamburger) {
@@ -600,13 +571,10 @@ instagramItems.forEach(item => {
 // ============================================
 function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
+    const themeToggleMobile = document.getElementById('themeToggleMobile');
     const themeIcon = document.getElementById('themeIcon');
+    const themeIconMobile = document.getElementById('themeIconMobile');
     const htmlElement = document.documentElement;
-
-    if (!themeToggle || !themeIcon) {
-        console.log('Theme toggle elements not found');
-        return;
-    }
 
     // Default to LIGHT theme
     const htmlTheme = htmlElement.getAttribute('data-theme');
@@ -618,19 +586,49 @@ function initThemeToggle() {
     if (!savedTheme) {
         localStorage.setItem('theme', currentTheme);
     }
-    updateThemeIcon(currentTheme, themeIcon);
 
-    // Add click event listener
-    themeToggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const currentTheme = htmlElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        
-        htmlElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+    // Update both icons if they exist
+    if (themeIcon) {
+        updateThemeIcon(currentTheme, themeIcon);
+    }
+    if (themeIconMobile) {
+        updateThemeIcon(currentTheme, themeIconMobile);
+    }
+
+    // Initialize desktop theme toggle
+    if (themeToggle && !themeToggle.dataset.listenerAttached) {
+        themeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleTheme(htmlElement, themeIcon, themeIconMobile);
+        });
+        themeToggle.dataset.listenerAttached = 'true';
+    }
+
+    // Initialize mobile theme toggle
+    if (themeToggleMobile && !themeToggleMobile.dataset.listenerAttached) {
+        themeToggleMobile.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleTheme(htmlElement, themeIcon, themeIconMobile);
+        });
+        themeToggleMobile.dataset.listenerAttached = 'true';
+    }
+}
+
+function toggleTheme(htmlElement, themeIcon, themeIconMobile) {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    htmlElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    if (themeIcon) {
         updateThemeIcon(newTheme, themeIcon);
-    });
+    }
+    if (themeIconMobile) {
+        updateThemeIcon(newTheme, themeIconMobile);
+    }
 }
 
 function updateThemeIcon(theme, themeIcon) {
@@ -651,28 +649,52 @@ function updateThemeIcon(theme, themeIcon) {
 // INITIALIZE ON PAGE LOAD
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize theme toggle
-    initThemeToggle();
+    // Initialize theme toggle first (most important)
+    try {
+        initThemeToggle();
+    } catch (error) {
+        console.error('Error initializing theme toggle:', error);
+    }
     
     // Set initial active nav link
-    activateNavLink();
+    try {
+        if (typeof activateNavLink === 'function') {
+            activateNavLink();
+        }
+    } catch (error) {
+        console.error('Error activating nav link:', error);
+    }
     
-    // Initialize first review as active
-    if (reviewCards.length > 0) {
-        showReview(0);
+    // Initialize first review as active (only if reviewCards exists)
+    try {
+        if (typeof reviewCards !== 'undefined' && reviewCards && reviewCards.length > 0) {
+            if (typeof showReview === 'function') {
+                showReview(0);
+            }
+        }
+    } catch (error) {
+        console.error('Error initializing reviews:', error);
     }
     
     // Add loading animation
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
-        document.body.style.opacity = '1';
-    }, 100);
+    try {
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 0.5s ease';
+            document.body.style.opacity = '1';
+        }, 100);
+    } catch (error) {
+        console.error('Error with loading animation:', error);
+    }
 });
 
 // Also try to initialize immediately if DOM is already loaded
-if (document.readyState !== 'loading') {
-    initThemeToggle();
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    try {
+        initThemeToggle();
+    } catch (error) {
+        console.error('Error initializing theme toggle (immediate):', error);
+    }
 }
 
 // ============================================

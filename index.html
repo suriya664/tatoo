@@ -33,21 +33,21 @@
                 <span class="ink-splatter">✕</span>
             </a>
             <ul class="nav-menu" id="navMenu">
-                <li class="nav-dropdown">
-                    <a href="#" class="nav-link active" id="homeDropdown">Home <i class="fas fa-chevron-down"></i></a>
-                    <ul class="dropdown-menu" id="homeDropdownMenu">
-                        <li><a href="home.html" class="dropdown-link">Home Overview</a></li>
-                        <li><a href="index.html" class="dropdown-link">Full Details</a></li>
-                    </ul>
-                </li>
+                <li><a href="home.html" class="nav-link">Home</a></li>
+                <li><a href="index.html" class="nav-link">Home2</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#artists" class="nav-link">Artists</a></li>
                 <li><a href="#styles" class="nav-link">Services</a></li>
                 <li><a href="#gallery" class="nav-link">Gallery</a></li>
-                <li><a href="#reviews" class="nav-link">Reviews</a></li>
                 <li><a href="#location" class="nav-link">Contact</a></li>
                 <li><a href="#book" class="nav-link">Book</a></li>
                 <li class="nav-mobile-btn"><a href="dashboard.html" class="btn btn-nav">Dashboard</a></li>
+                <li class="nav-theme-toggle-mobile">
+                    <button class="theme-toggle theme-toggle-mobile" id="themeToggleMobile" aria-label="Toggle theme">
+                        <i class="fas fa-moon" id="themeIconMobile"></i>
+                        <span>Toggle Theme</span>
+                    </button>
+                </li>
             </ul>
             <div class="nav-contact">
                 <a href="dashboard.html" class="btn btn-nav">Dashboard</a>
@@ -67,7 +67,8 @@
 
     <!-- HERO SECTION -->
     <section id="home" class="hero">
-        <div class="hero-background">
+        <div class="hero-background" style="background-image: url('images/gallery_realism_1_1766489085640.png');">
+            <div class="hero-overlay"></div>
             <div class="smoke-effect"></div>
         </div>
         <div class="hero-content">
@@ -156,7 +157,7 @@
                         <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400" alt="Artist 2">
                         <div class="polaroid-frame"></div>
                     </div>
-                    <h3 class="artist-name">Sarah "Shade" Chen</h3>
+                    <h3 class="artist-name">Sarah "Shade" Chennethy</h3>
                     <p class="artist-specialty">Realism & Portrait</p>
                     <p class="artist-exp">10 Years Experience</p>
                     <div class="artist-style-icon">
@@ -263,14 +264,14 @@
                         <img src="images/style_script_1766489266299.png" alt="Script">
                     </div>
                     <h3>Script</h3>
-                    <p>Elegant lettering and typography</p>
+                    <p>Elegant lettering and ect</p>
                 </div>
                 <div class="style-card">
                     <div class="style-image">
                         <img src="images/style_coverup_1766489285074.png" alt="Cover-ups">
                     </div>
                     <h3>Cover-ups</h3>
-                    <p>Transform old tattoos into new art</p>
+                    <p>Transform old tattoos into art</p>
                 </div>
             </div>
         </div>
@@ -396,7 +397,7 @@
             <h2 class="section-heading">Our Services</h2>
             <div class="services-grid">
                 <div class="service-card">
-                    <div class="service-icon" align="center">
+                    <div class="service-icon">
                         <i class="fas fa-paint-brush"></i>
                     </div>
                     <h3>Custom Tattoos</h3>
@@ -410,7 +411,7 @@
                     </ul>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon" align="center">
+                    <div class="service-icon">
                         <i class="fas fa-redo"></i>
                     </div>
                     <h3>Cover-up Tattoos</h3>
@@ -424,7 +425,7 @@
                     </ul>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon" align="center">
+                    <div class="service-icon">
                         <i class="fas fa-sync-alt"></i>
                     </div>
                     <h3>Touch-ups </h3>
@@ -437,7 +438,7 @@
                     </ul>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon" align="center">
+                    <div class="service-icon">
                         <i class="fas fa-gem"></i>
                     </div>
                     <h3>Piercing</h3>
@@ -450,7 +451,7 @@
                     </ul>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon" align="center">
+                    <div class="service-icon">
                         <i class="fas fa-eraser"></i>
                     </div>
                     <h3>Tattoo Removal Consultation</h3>
@@ -1088,31 +1089,9 @@
                             </a>
                         </div>
                     </div>
-                    <div class="footer-newsletter">
-                        <h3>Get Flash Deals & Updates</h3>
-                        <form class="newsletter-form">
-                            <input type="email" placeholder="Enter your email">
-                            <button type="submit" class="btn btn-small">Subscribe</button>
-                        </form>
-                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <div class="footer-payment">
-                    <p>We Accept:</p>
-                    <i class="fab fa-cc-visa"></i>
-                    <i class="fab fa-cc-mastercard"></i>
-                    <i class="fab fa-cc-amex"></i>
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-                <div class="footer-certifications">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Licensed & Certified</span>
-                </div>
-                <p class="footer-copyright">
-                    &copy; 2025 Ink & Art Tattoo Studio. All rights reserved. <span class="ink-splatter">✕</span>
-                </p>
-            </div>
+        
         </div>
     </footer>
 

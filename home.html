@@ -30,21 +30,21 @@
                 <span class="ink-splatter">✕</span>
             </a>
             <ul class="nav-menu" id="navMenu">
-                <li class="nav-dropdown">
-                    <a href="#" class="nav-link active" id="homeDropdown">Home <i class="fas fa-chevron-down"></i></a>
-                    <ul class="dropdown-menu" id="homeDropdownMenu">
-                        <li><a href="home.html" class="dropdown-link">Home Overview</a></li>
-                        <li><a href="index.html" class="dropdown-link">Full Details</a></li>
-                    </ul>
-                </li>
+                <li><a href="home.html" class="nav-link active">Home</a></li>
+                <li><a href="index.html" class="nav-link">Home2</a></li>
                 <li><a href="index.html#about" class="nav-link">About</a></li>
                 <li><a href="index.html#artists" class="nav-link">Artists</a></li>
                 <li><a href="index.html#styles" class="nav-link">Services</a></li>
                 <li><a href="index.html#gallery" class="nav-link">Gallery</a></li>
-                <li><a href="index.html#reviews" class="nav-link">Reviews</a></li>
                 <li><a href="index.html#location" class="nav-link">Contact</a></li>
                 <li><a href="index.html#book" class="nav-link">Book</a></li>
                 <li class="nav-mobile-btn"><a href="dashboard.html" class="btn btn-nav">Dashboard</a></li>
+                <li class="nav-theme-toggle-mobile">
+                    <button class="theme-toggle theme-toggle-mobile" id="themeToggleMobile" aria-label="Toggle theme">
+                        <i class="fas fa-moon" id="themeIconMobile"></i>
+                        <span>Toggle Theme</span>
+                    </button>
+                </li>
             </ul>
             <div class="nav-contact">
                 <a href="dashboard.html" class="btn btn-nav">Dashboard</a>
@@ -64,7 +64,8 @@
 
     <!-- HERO SECTION -->
     <section id="home" class="hero">
-        <div class="hero-background">
+        <div class="hero-background" style="background-image: url('images/gallery_traditional_1_1766489069983.png');">
+            <div class="hero-overlay"></div>
             <div class="smoke-effect"></div>
         </div>
         <div class="hero-content">
@@ -130,6 +131,20 @@
                     <h3>Transparent Pricing</h3>
                     <p>No hidden fees. We provide clear pricing upfront and work within your budget to create amazing art.</p>
                 </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Premium Quality</h3>
+                    <p>We use only the highest quality inks and equipment to ensure your tattoo looks stunning for years to come.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Trusted</h3>
+                    <p>Trusted by thousands of satisfied clients with countless successful tattoo transformations and lasting relationships.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -146,7 +161,7 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" data-target="3200" data-suffix="+">0</div>
-                    <div class="stat-label">Happy Clients</div>
+                    <div class="stat-label">Happy Clients worldwide</div>
                     <p class="stat-description">Satisfied customers worldwide</p>
                 </div>
                 <div class="stat-item">
@@ -157,7 +172,7 @@
                 <div class="stat-item">
                     <div class="stat-number" data-target="14" data-suffix="+">0</div>
                     <div class="stat-label">Years in Business</div>
-                    <p class="stat-description">Trusted since 2010</p>
+                    <p class="stat-description">Trusted from since 2010</p>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" data-target="98" data-suffix="%">0</div>
@@ -166,7 +181,7 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-number" data-target="50" data-suffix="+">0</div>
-                    <div class="stat-label">Tattoo Styles</div>
+                    <div class="stat-label">Tattoo and  Styles</div>
                     <p class="stat-description">Various styles mastered</p>
                 </div>
             </div>
