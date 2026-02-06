@@ -60,30 +60,30 @@ function activateNavLink() {
     });
 }
 
-window.addEventListener('scroll', activateNavLink);
+// activateNavLink is now called inside the throttled scroll listener
 
 // Smooth scroll for nav links
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         const targetId = link.getAttribute('href');
-        
+
         // If we're on home.html and clicking a section link, redirect to index.html
-        if (window.location.pathname.includes('home.html') && targetId && targetId.startsWith('#')) {
+        if (window.location.pathname.includes('index.html') && targetId && targetId.startsWith('#')) {
             e.preventDefault();
-            window.location.href = 'index.html' + targetId;
+            window.location.href = 'home-v2.html' + targetId;
             return;
         }
-        
-        // If link already points to index.html, let it navigate normally
-        if (targetId && targetId.includes('index.html')) {
+
+        // If link already points to home-v2.html, let it navigate normally
+        if (targetId && targetId.includes('home-v2.html')) {
             return;
         }
-        
+
         // Otherwise, handle smooth scroll for same-page navigation
         if (targetId && targetId.startsWith('#')) {
             e.preventDefault();
             const targetSection = document.querySelector(targetId);
-            
+
             if (targetSection) {
                 const offsetTop = targetSection.offsetTop - 80;
                 window.scrollTo({
@@ -136,8 +136,22 @@ function checkStatsVisibility() {
     }
 }
 
-window.addEventListener('scroll', checkStatsVisibility);
-checkStatsVisibility(); // Check on load
+// Throttled scroll handler
+let scrollTimeout;
+window.addEventListener('scroll', () => {
+    if (!scrollTimeout) {
+        requestAnimationFrame(() => {
+            activateNavLink();
+            checkStatsVisibility();
+            scrollTimeout = false;
+        });
+        scrollTimeout = true;
+    }
+});
+
+// Initial check
+activateNavLink();
+checkStatsVisibility();
 
 // ============================================
 // GALLERY FILTER FUNCTIONALITY
@@ -156,7 +170,7 @@ filterButtons.forEach(button => {
 
         galleryItems.forEach(item => {
             const category = item.getAttribute('data-category');
-            
+
             if (filterValue === 'all' || category === filterValue) {
                 item.style.display = 'block';
                 setTimeout(() => {
@@ -188,12 +202,12 @@ galleryItems.forEach(item => {
     item.addEventListener('click', () => {
         const img = item.querySelector('img');
         const overlay = item.querySelector('.gallery-overlay');
-        
+
         lightboxImage.src = img.src;
         lightboxStyle.textContent = overlay.querySelector('.gallery-style').textContent;
         lightboxArtist.textContent = overlay.querySelector('.gallery-artist').textContent;
         lightboxSize.textContent = overlay.querySelector('.gallery-size').textContent;
-        
+
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
     });
@@ -259,15 +273,15 @@ const faqItems = document.querySelectorAll('.faq-item');
 
 faqItems.forEach(item => {
     const question = item.querySelector('.faq-question');
-    
+
     question.addEventListener('click', () => {
         const isActive = item.classList.contains('active');
-        
+
         // Close all FAQ items
         faqItems.forEach(faqItem => {
             faqItem.classList.remove('active');
         });
-        
+
         // Open clicked item if it wasn't active
         if (!isActive) {
             item.classList.add('active');
@@ -289,13 +303,13 @@ function createErrorMessage(input, message) {
     errorDiv.style.fontSize = '0.85rem';
     errorDiv.style.marginTop = '5px';
     errorDiv.style.display = 'block';
-    
+
     // Remove existing error if any
     const existingError = input.parentElement.querySelector('.error-message');
     if (existingError) {
         existingError.remove();
     }
-    
+
     input.parentElement.appendChild(errorDiv);
     input.style.borderColor = 'var(--highlight)';
 }
@@ -324,7 +338,7 @@ function validatePhone(phone) {
 // Real-time validation
 const formInputs = document.querySelectorAll('.booking-form input, .booking-form textarea');
 formInputs.forEach(input => {
-    input.addEventListener('blur', function() {
+    input.addEventListener('blur', function () {
         if (this.hasAttribute('required') && !this.value.trim()) {
             createErrorMessage(this, 'This field is required');
         } else if (this.type === 'email' && this.value && !validateEmail(this.value)) {
@@ -335,8 +349,8 @@ formInputs.forEach(input => {
             removeErrorMessage(this);
         }
     });
-    
-    input.addEventListener('input', function() {
+
+    input.addEventListener('input', function () {
         if (this.style.borderColor === 'var(--highlight)') {
             removeErrorMessage(this);
         }
@@ -345,10 +359,10 @@ formInputs.forEach(input => {
 
 bookingForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     let isValid = true;
     const requiredFields = bookingForm.querySelectorAll('[required]');
-    
+
     // Validate all required fields
     requiredFields.forEach(field => {
         if (!field.value.trim()) {
@@ -364,7 +378,7 @@ bookingForm.addEventListener('submit', (e) => {
             removeErrorMessage(field);
         }
     });
-    
+
     if (!isValid) {
         // Scroll to first error
         const firstError = bookingForm.querySelector('.error-message');
@@ -373,32 +387,32 @@ bookingForm.addEventListener('submit', (e) => {
         }
         return;
     }
-    
+
     // Get form data
     const formData = new FormData(bookingForm);
     const data = Object.fromEntries(formData);
-    
+
     // Show success message
     const successMessage = document.createElement('div');
     successMessage.className = 'success-message';
     successMessage.style.cssText = 'background: var(--secondary); color: var(--text); padding: 20px; margin-top: 20px; text-align: center; clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);';
     successMessage.textContent = 'Thank you! We\'ll contact you within 24 hours to confirm your appointment.';
     successMessage.style.display = 'block';
-    
+
     // Remove existing success message if any
     const existingSuccess = bookingForm.querySelector('.success-message');
     if (existingSuccess) {
         existingSuccess.remove();
     }
-    
+
     bookingForm.appendChild(successMessage);
-    
+
     // Reset form after 3 seconds
     setTimeout(() => {
         bookingForm.reset();
         successMessage.remove();
     }, 5000);
-    
+
     // Here you would typically send the data to a server via AJAX
     console.log('Booking request:', data);
 });
@@ -412,10 +426,10 @@ if (newsletterForm) {
     newsletterForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const email = newsletterForm.querySelector('input[type="email"]').value;
-        
+
         // Here you would typically send the email to a server
         console.log('Newsletter subscription:', email);
-        
+
         alert('Thank you for subscribing!');
         newsletterForm.reset();
     });
@@ -454,7 +468,7 @@ animateElements.forEach(element => {
 const buttons = document.querySelectorAll('.btn');
 
 buttons.forEach(button => {
-    button.addEventListener('mouseenter', function() {
+    button.addEventListener('mouseenter', function () {
         // Create ink drop effect
         const drop = document.createElement('div');
         drop.style.position = 'absolute';
@@ -467,10 +481,10 @@ buttons.forEach(button => {
         drop.style.transform = 'translate(-50%, -50%)';
         drop.style.pointerEvents = 'none';
         drop.style.animation = 'inkDrop 0.6s ease-out';
-        
+
         this.style.position = 'relative';
         this.appendChild(drop);
-        
+
         setTimeout(() => {
             drop.remove();
         }, 600);
@@ -499,7 +513,7 @@ document.head.appendChild(style);
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const parallaxElements = document.querySelectorAll('.hero-background');
-    
+
     parallaxElements.forEach(element => {
         const speed = 0.5;
         element.style.transform = `translateY(${scrolled * speed}px)`;
@@ -530,7 +544,7 @@ if (loadMoreBtn) {
         // Simulate loading more items
         // In a real application, you would fetch from an API
         console.log('Loading more gallery items...');
-        
+
         // For demo purposes, just show a message
         loadMoreBtn.textContent = 'All Items Loaded';
         loadMoreBtn.disabled = true;
@@ -544,12 +558,12 @@ if (loadMoreBtn) {
 const bookingFormInputs = document.querySelectorAll('.booking-form input, .booking-form textarea, .booking-form select');
 
 bookingFormInputs.forEach(input => {
-    input.addEventListener('focus', function() {
+    input.addEventListener('focus', function () {
         this.parentElement.style.transform = 'scale(1.02)';
         this.parentElement.style.transition = 'transform 0.3s ease';
     });
-    
-    input.addEventListener('blur', function() {
+
+    input.addEventListener('blur', function () {
         this.parentElement.style.transform = 'scale(1)';
     });
 });
@@ -597,7 +611,7 @@ function initThemeToggle() {
 
     // Initialize desktop theme toggle
     if (themeToggle && !themeToggle.dataset.listenerAttached) {
-        themeToggle.addEventListener('click', function(e) {
+        themeToggle.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             toggleTheme(htmlElement, themeIcon, themeIconMobile);
@@ -607,7 +621,7 @@ function initThemeToggle() {
 
     // Initialize mobile theme toggle
     if (themeToggleMobile && !themeToggleMobile.dataset.listenerAttached) {
-        themeToggleMobile.addEventListener('click', function(e) {
+        themeToggleMobile.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             toggleTheme(htmlElement, themeIcon, themeIconMobile);
@@ -619,10 +633,10 @@ function initThemeToggle() {
 function toggleTheme(htmlElement, themeIcon, themeIconMobile) {
     const currentTheme = htmlElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
+
     htmlElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
-    
+
     if (themeIcon) {
         updateThemeIcon(newTheme, themeIcon);
     }
@@ -633,7 +647,7 @@ function toggleTheme(htmlElement, themeIcon, themeIconMobile) {
 
 function updateThemeIcon(theme, themeIcon) {
     if (!themeIcon) return;
-    
+
     // Light mode = show moon icon to switch to dark
     // Dark mode = show sun icon to switch to light
     if (theme === 'light') {
@@ -655,7 +669,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
         console.error('Error initializing theme toggle:', error);
     }
-    
+
     // Set initial active nav link
     try {
         if (typeof activateNavLink === 'function') {
@@ -664,7 +678,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
         console.error('Error activating nav link:', error);
     }
-    
+
     // Initialize first review as active (only if reviewCards exists)
     try {
         if (typeof reviewCards !== 'undefined' && reviewCards && reviewCards.length > 0) {
@@ -675,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
         console.error('Error initializing reviews:', error);
     }
-    
+
     // Add loading animation
     try {
         document.body.style.opacity = '0';
